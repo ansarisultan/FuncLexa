@@ -2,19 +2,40 @@
 @tailwind components;
 @tailwind utilities;
 
-
-@keyframes twinkle {
-  0%, 100% { opacity: 0.2; }
-  50% { opacity: 1; }
+/* ===========================
+   GLOBAL FONT & BASE STYLES
+=========================== */
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
 }
-/* =========================
-   GLOBAL ZOOM CONTROL
-========================= */
 
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow-x: hidden;
+  background-color: #020617;
+  color: #ffffff;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 
+code, .font-mono {
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+}
 
+#root {
+  min-height: 100vh;
+  position: relative;
+}
+
+/* ===========================
+   SCROLLBAR — Premium Slim
+=========================== */
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 6px;
 }
 
 ::-webkit-scrollbar-track {
@@ -22,12 +43,12 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #22d3ee, #3b82f6);
+  background: linear-gradient(180deg, #22d3ee, #7c4dff);
   border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, #38bdf8, #6366f1);
+  background: linear-gradient(180deg, #38bdf8, #a855f7);
 }
 
 /* Firefox Support */
@@ -36,7 +57,15 @@
   scrollbar-color: #22d3ee #020617;
 }
 
-/* Remove blue tap highlight on mobile */
-* {
-  -webkit-tap-highlight-color: transparent;
+/* ===========================
+   SELECTION HIGHLIGHT
+=========================== */
+::selection {
+  background: rgba(0, 229, 255, 0.2);
+  color: #ffffff;
+}
+
+::-moz-selection {
+  background: rgba(0, 229, 255, 0.2);
+  color: #ffffff;
 }

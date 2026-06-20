@@ -1,178 +1,158 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { FaGithub, FaExternalLinkAlt } from "react-icons/fa";
 
 const apps = [
   {
     title: "LexaChat AI",
-    desc: "A high-performance, secure AI chat application built on a dual-process system model with an isolated service backend.",
-    tags: ["Electron", "React", "Node.js", "Dual-Process Architecture"],
+    desc: "A high-performance, secure AI chat application built on a dual-process system model with an isolated service backend. Context-aware conversations powered by Groq API.",
+    tags: ["Electron", "React", "Node.js", "Groq AI"],
     image: "/lexachat.png",
     demo: "https://lexachat-funclexa.vercel.app/",
     github: "https://github.com/ansarisultan/lexachat",
+    gradient: "from-cyan-500/20 to-blue-500/20",
+    accent: "cyan",
   },
   {
-    title: "FuncSpan – Network Simulation Playground",
-    desc: "A deep-dive developer sandbox built to intercept live API payloads, inject HTTP status codes, and simulate custom network latency.",
+    title: "FuncSpan",
+    desc: "A deep-dive developer sandbox built to intercept live API payloads, inject HTTP status codes, and simulate custom network latency in real-time.",
     tags: ["React", "Proxy Engine", "Traffic Inspector"],
     image: "/funcspan.png",
     demo: "https://funcspan.funclexa.dev/",
     github: "https://github.com/ansarisultan/",
+    gradient: "from-blue-500/20 to-purple-500/20",
+    accent: "blue",
   },
   {
-    title: "FuncSilo – Premium Developer Sandbox",
+    title: "FuncSilo",
     desc: "A premium developer sandbox workspace featuring high-fidelity custom design systems, responsive component templates, and isolated asset pipelines.",
     tags: ["React", "Design Studio", "Asset Manager"],
     image: "/funcsilo.png",
     demo: "https://funcsilo.funclexa.dev/",
     github: "https://github.com/ansarisultan/",
+    gradient: "from-purple-500/20 to-pink-500/20",
+    accent: "purple",
   },
 ];
 
-const FeaturedAppCard = ({ app }) => {
-  const [style, setStyle] = useState({});
-  const [glowStyle, setGlowStyle] = useState({ opacity: 0 });
+const FeaturedAppCard = ({ app, index }) => {
+  const cardRef = useRef(null);
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const [isHovered, setIsHovered] = useState(false);
 
   const handleMouseMove = (e) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-
-    const centerX = rect.width / 2;
-    const centerY = rect.height / 2;
-
-    const rotateX = -(y - centerY) / 15;
-    const rotateY = (x - centerX) / 15;
-
-    setStyle({
-      transform: `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`,
-      transition: "transform 0.1s ease",
-    });
-
-    setGlowStyle({
-      opacity: 1,
-      background: `radial-gradient(circle 180px at ${x}px ${y}px, rgba(0, 234, 255, 0.15), transparent 80%)`,
+    if (!cardRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    setMousePos({
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top,
     });
   };
 
-  const handleMouseLeave = () => {
-    setStyle({
-      transform: "perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)",
-      transition: "transform 0.5s cubic-bezier(0.25, 1, 0.5, 1)",
-    });
-    setGlowStyle({
-      opacity: 0,
-      transition: "opacity 0.5s ease",
-    });
+  const accentColors = {
+    cyan: { border: "hover:border-cyan-400/40", glow: "rgba(0,229,255,0.15)", shadow: "hover:shadow-[0_0_40px_rgba(0,229,255,0.15)]" },
+    blue: { border: "hover:border-blue-400/40", glow: "rgba(59,130,246,0.15)", shadow: "hover:shadow-[0_0_40px_rgba(59,130,246,0.15)]" },
+    purple: { border: "hover:border-purple-400/40", glow: "rgba(124,77,255,0.15)", shadow: "hover:shadow-[0_0_40px_rgba(124,77,255,0.15)]" },
   };
+
+  const colors = accentColors[app.accent] || accentColors.cyan;
 
   return (
     <div
+      ref={cardRef}
       onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      style={{
-        ...style,
-        transformStyle: "preserve-3d",
-      }}
-      className="group relative rounded-3xl overflow-hidden
-                 bg-[#041226]/20
-                 border border-white/[0.08]
-                 hover:border-cyan-400/40
-                 shadow-[0_0_20px_rgba(0,229,255,0.15),0_0_50px_rgba(0,229,255,0.08)]
-                 hover:shadow-[0_0_35px_rgba(0,229,255,0.25)]
-                 transition-all duration-300 flex flex-col h-full"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      className={`group relative rounded-2xl overflow-hidden flex flex-col h-full
+                  border border-white/[0.06] ${colors.border} ${colors.shadow}
+                  bg-white/[0.02] transition-all duration-500 hover:-translate-y-2`}
+      style={{ animationDelay: `${index * 150}ms` }}
     >
-      {/* Interactive Follow-Glow */}
-      <div className="absolute inset-0 pointer-events-none" style={glowStyle} />
+      {/* Mouse follow glow */}
+      {isHovered && (
+        <div
+          className="absolute inset-0 pointer-events-none z-10 transition-opacity duration-300"
+          style={{
+            background: `radial-gradient(300px circle at ${mousePos.x}px ${mousePos.y}px, ${colors.glow}, transparent 70%)`,
+          }}
+        />
+      )}
 
-      {/* Cyberpunk Scan Line Sweep on Hover */}
-      <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-cyan-400 to-transparent opacity-0 group-hover:opacity-80 transition-opacity duration-500" />
-      <div className="absolute inset-0 bg-gradient-to-b from-cyan-400/5 to-transparent translate-y-[-100%] group-hover:translate-y-[100%] transition-transform duration-[1200ms] ease-out pointer-events-none" />
-
-      {/* Image Container with depth */}
-      <div className="relative h-48 w-full overflow-hidden" style={{ transform: "translateZ(20px)" }}>
+      {/* Image */}
+      <div className="relative h-48 sm:h-52 overflow-hidden">
         <img
           src={app.image}
           alt={app.title}
-          className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0b0f19] to-transparent opacity-60" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#020617] via-[#020617]/50 to-transparent" />
+        
+        {/* Floating badge */}
+        <div className="absolute top-4 right-4 px-3 py-1 rounded-full bg-black/60 backdrop-blur-sm
+                        border border-white/10 text-[10px] text-white/60 font-mono uppercase tracking-wider">
+          Live
+        </div>
       </div>
 
-      {/* Content Container */}
-      <div className="px-6 py-6 flex flex-col flex-grow justify-between relative z-10" style={{ transform: "translateZ(30px)" }}>
+      {/* Content */}
+      <div className="flex-1 p-6 flex flex-col justify-between relative z-20">
         <div>
-          <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-cyan-400 transition-colors duration-300 font-sans tracking-wide">
+          <h3 className="text-xl font-bold text-white mb-3 group-hover:text-cyan-400 transition-colors duration-300">
             {app.title}
           </h3>
-
-          <p className="text-sm text-gray-300 leading-relaxed font-light mb-4">
-            {app.desc}
-          </p>
+          <p className="text-sm text-white/40 leading-relaxed mb-5">{app.desc}</p>
         </div>
 
         <div>
           {/* Tags */}
-          <div className="flex flex-wrap gap-2 mb-6">
+          <div className="flex flex-wrap gap-2 mb-5">
             {app.tags.map((tag, i) => (
               <span
                 key={i}
-                className="bg-cyan-950/80 border border-cyan-400/30
-                           text-cyan-300 text-xs px-2.5 py-1 rounded-full font-mono"
+                className="text-[10px] px-2.5 py-1 rounded-md font-mono tracking-wider
+                           bg-white/[0.04] border border-white/[0.06] text-white/50"
               >
                 {tag}
               </span>
             ))}
           </div>
 
-          {/* Action Buttons */}
-          <div className="flex gap-4">
+          {/* Actions */}
+          <div className="flex gap-3">
             {app.demo.startsWith("/") ? (
               <Link
                 to={app.demo}
-                className="flex items-center gap-2 px-5 py-2.5 text-xs uppercase tracking-widest font-semibold
-                           text-cyan-300 border border-cyan-400/40 rounded-xl
-                           bg-cyan-400/5
-                           hover:bg-cyan-400/20
-                           hover:shadow-[0_0_20px_rgba(0,234,255,0.5)]
+                className="flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-xs font-bold uppercase tracking-wider
+                           bg-gradient-to-r from-cyan-500/10 to-blue-500/10 border border-cyan-400/20 text-cyan-400
+                           hover:from-cyan-500/20 hover:to-blue-500/20 hover:border-cyan-400/40
                            transition-all duration-300"
               >
-                <FaExternalLinkAlt />
-                Explore
+                <FaExternalLinkAlt className="text-[10px]" /> Explore
               </Link>
             ) : (
               <a
                 href={app.demo}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 px-5 py-2.5 text-xs uppercase tracking-widest font-semibold
-                           text-cyan-300 border border-cyan-400/40 rounded-xl
-                           bg-cyan-400/5
-                           hover:bg-cyan-400/20
-                           hover:shadow-[0_0_20px_rgba(0,234,255,0.5)]
+                className="flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-xs font-bold uppercase tracking-wider
+                           bg-gradient-to-r from-cyan-500/10 to-blue-500/10 border border-cyan-400/20 text-cyan-400
+                           hover:from-cyan-500/20 hover:to-blue-500/20 hover:border-cyan-400/40
                            transition-all duration-300"
               >
-                <FaExternalLinkAlt />
-                Demo
+                <FaExternalLinkAlt className="text-[10px]" /> Demo
               </a>
             )}
-
-            {app.github !== "#" && (
-              <a
-                href={app.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 px-5 py-2.5 text-xs uppercase tracking-widest font-semibold
-                           text-white/80 border border-white/10 rounded-xl
-                           bg-white/5
-                           hover:text-cyan-300 hover:border-cyan-400/40 hover:bg-cyan-400/5
-                           hover:shadow-[0_0_20px_rgba(0,234,255,0.3)]
-                           transition-all duration-300"
-              >
-                <FaGithub />
-                GitHub
-              </a>
-            )}
+            <a
+              href={app.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-xs font-bold uppercase tracking-wider
+                         border border-white/[0.06] text-white/50
+                         hover:border-white/20 hover:text-white hover:bg-white/5
+                         transition-all duration-300"
+            >
+              <FaGithub />
+            </a>
           </div>
         </div>
       </div>
@@ -182,18 +162,25 @@ const FeaturedAppCard = ({ app }) => {
 
 const FeaturedApps = () => {
   return (
-    <section id="featured" className="relative px-6 sm:px-12 py-24">
-      {/* Section glow */}
-      <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[40rem] h-[40rem] bg-cyan-400/10 blur-3xl rounded-full pointer-events-none" />
+    <section id="featured" className="relative py-32">
+      <div className="max-w-7xl mx-auto px-6 sm:px-12">
+        {/* Header */}
+        <div className="text-center mb-16">
+          <p className="text-cyan-400 font-mono text-xs tracking-[0.4em] uppercase mb-4">// Ecosystem</p>
+          <h2 className="text-4xl sm:text-5xl md:text-6xl font-black text-white mb-6">
+            Featured <span className="bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">Apps</span>
+          </h2>
+          <p className="text-white/40 text-lg max-w-2xl mx-auto">
+            Production-grade applications powering the FuncLexa ecosystem.
+          </p>
+        </div>
 
-      <h2 className="text-4xl font-bold text-center mb-14 text-cyan-400 uppercase tracking-widest">
-        Featured Apps
-      </h2>
-
-      <div className="relative grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
-        {apps.map((app, index) => (
-          <FeaturedAppCard key={index} app={app} />
-        ))}
+        {/* Cards Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+          {apps.map((app, index) => (
+            <FeaturedAppCard key={index} app={app} index={index} />
+          ))}
+        </div>
       </div>
     </section>
   );
