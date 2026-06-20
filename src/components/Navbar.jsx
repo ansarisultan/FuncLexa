@@ -3,13 +3,12 @@ import AskAI from "./AskAI";
 
 const Navbar = () => {
   return (
-    <nav className="w-screen overflow-hidden px-3 sm:px-6">
+    <nav className="w-full overflow-hidden px-3 sm:px-6">
       <div
         className="relative flex flex-col sm:flex-row sm:items-center sm:justify-between
-                   bg-gradient-to-r from-white/10 via-white/5 to-white/10
-                   backdrop-blur-2xl border border-cyan-400/30
+                   bg-[#041226]/20 border border-white/[0.08]
                    rounded-3xl px-6 py-5
-                   shadow-[0_0_60px_rgba(0,234,255,0.25)]
+                   shadow-[0_0_20px_rgba(0,229,255,0.15),0_0_50px_rgba(0,229,255,0.08)]
                    overflow-hidden group"
       >
         {/* Top Scan Line */}

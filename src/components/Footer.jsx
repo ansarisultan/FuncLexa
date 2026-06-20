@@ -25,9 +25,8 @@ const Footer = () => {
 
           {/* Logo container */}
           <div className="w-24 h-24 rounded-full overflow-hidden
-                          bg-gradient-to-br from-white/20 to-white/5
-                          backdrop-blur-md border border-white/20 p-1
-                          shadow-[0_0_30px_rgba(0,234,255,0.4)]">
+                          bg-[#041226]/20 border border-white/[0.08] p-1
+                          shadow-[0_0_20px_rgba(0,229,255,0.15),0_0_50px_rgba(0,229,255,0.08)]">
             <img
               src={logo}
               alt="FuncLexa Logo"

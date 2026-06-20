@@ -66,11 +66,10 @@ const Contact = () => {
         {/* Contact Form */}
         <div
           className="flex-1 relative
-                     bg-gradient-to-br from-white/10 to-white/5
-                     backdrop-blur-xl
-                     border border-cyan-400/30
+                     bg-[#041226]/20
+                     border border-white/[0.08]
                      p-8 rounded-2xl
-                     shadow-[0_0_40px_rgba(0,234,255,0.15)]"
+                     shadow-[0_0_20px_rgba(0,229,255,0.15),0_0_50px_rgba(0,229,255,0.08)]"
         >
           {/* AI scan line */}
           <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-cyan-400 to-transparent" />

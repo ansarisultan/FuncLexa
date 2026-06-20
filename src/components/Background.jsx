@@ -6,21 +6,19 @@ const Background = () => {
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    const ctx = canvas.getContext("2d");
+    const c = canvas.getContext("2d");
     const container = containerRef.current;
-
     let stars = [];
-    let nebulaBands = [];
-    let particles = [];
-    let pulse = 0;
     let animationId;
     let resizeTimeout;
 
-    // Function to get accurate viewport dimensions
+    // Mouse coordinates
+    let mouse = { x: null, y: null };
+
     const getViewportSize = () => {
       return {
-        width: Math.max(document.documentElement.clientWidth, window.innerWidth || 0),
-        height: Math.max(document.documentElement.clientHeight, window.innerHeight || 0)
+        width: document.documentElement.clientWidth || window.innerWidth || 0,
+        height: document.documentElement.clientHeight || window.innerHeight || 0
       };
     };
 
@@ -30,161 +28,140 @@ const Background = () => {
       resizeTimeout = setTimeout(() => {
         const { width, height } = getViewportSize();
         
-        // Set canvas dimensions to exact pixel values
         canvas.width = width;
         canvas.height = height;
         
-        // Reset elements
+        canvas.style.width = `${width}px`;
+        canvas.style.height = `${height}px`;
+        
+        if (container) {
+          container.style.width = `${width}px`;
+          container.style.height = `${height}px`;
+        }
+        
         initializeElements();
       }, 100);
     };
 
     const initializeElements = () => {
       stars = [];
-      nebulaBands = [];
-      particles = [];
+      const particleCount = Math.min(120, Math.floor((canvas.width * canvas.height) / 12000));
       
-      // Stars
-      for (let i = 0; i < 160; i++) {
+      for (let i = 0; i < particleCount; i++) {
+        const isCyan = Math.random() > 0.4;
         stars.push({
           x: Math.random() * canvas.width,
           y: Math.random() * canvas.height,
-          r: Math.random() * 1.1 + 0.2,
-          o: Math.random() * 0.6 + 0.2,
-        });
-      }
-
-      // Nebula Bands
-      for (let i = 0; i < 4; i++) {
-        nebulaBands.push({
-          y: canvas.height * (0.35 + Math.random() * 0.3),
-          x: Math.random() * canvas.width,
-          width: Math.random() * 900 + 900,
-          opacity: Math.random() * 0.12 + 0.05,
-          speed: Math.random() * 0.06 + 0.02,
-        });
-      }
-
-      // AI Signal Particles
-      for (let i = 0; i < 120; i++) {
-        particles.push({
-          x: Math.random() * canvas.width,
-          y: Math.random() * canvas.height,
-          v: Math.random() * 0.3 + 0.1,
-          o: Math.random() * 0.5 + 0.3,
+          radius: Math.random() * 1.5 + 0.5,
+          speed: Math.random() * 0.4 + 0.15,
+          color: isCyan ? "#00E5FF" : "#7C4DFF",
+          offset: Math.random() * 100, // Horizontal oscillation phase offset
         });
       }
     };
 
-    const drawGrid = () => {
-      ctx.strokeStyle = "rgba(0,234,255,0.04)";
-      ctx.lineWidth = 1;
+    const handleMouseMove = (e) => {
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+    };
 
-      const gap = 80;
-      for (let x = 0; x < canvas.width; x += gap) {
-        ctx.beginPath();
-        ctx.moveTo(x, canvas.height);
-        ctx.lineTo(x, canvas.height * 0.6);
-        ctx.stroke();
-      }
+    const handleMouseLeave = () => {
+      mouse.x = null;
+      mouse.y = null;
     };
 
     const draw = () => {
-      // Clear with full coverage
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      c.clearRect(0, 0, canvas.width, canvas.height);
       
-      // Base background
-      ctx.fillStyle = "#020617";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      // Deep cybernetic background color
+      c.fillStyle = "#020617";
+      c.fillRect(0, 0, canvas.width, canvas.height);
 
-      // Stars
-      stars.forEach((s) => {
-        ctx.beginPath();
-        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(200,245,255,${s.o})`;
-        ctx.fill();
-      });
+      // 1. Draw connecting lines between close stars (plexus effect)
+      for (let i = 0; i < stars.length; i++) {
+        for (let j = i + 1; j < stars.length; j++) {
+          const dx = stars[i].x - stars[j].x;
+          const dy = stars[i].y - stars[j].y;
+          const dist = dx * dx + dy * dy; // Avoid Math.sqrt for performance
 
-      // Nebula
-      nebulaBands.forEach((n) => {
-        const grad = ctx.createLinearGradient(
-          n.x,
-          n.y - 120,
-          n.x + n.width,
-          n.y + 120
-        );
-        grad.addColorStop(0, "rgba(0,0,0,0)");
-        grad.addColorStop(0.5, `rgba(0,200,255,${n.opacity})`);
-        grad.addColorStop(1, "rgba(0,0,0,0)");
-
-        ctx.fillStyle = grad;
-        ctx.fillRect(0, n.y - 180, canvas.width, 360);
-
-        n.x += n.speed;
-        if (n.x > canvas.width + n.width) n.x = -n.width;
-      });
-
-      // Grid
-      drawGrid();
-
-      // Particles
-      particles.forEach((p) => {
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, 1.2, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(0,234,255,${p.o})`;
-        ctx.fill();
-
-        p.y -= p.v;
-        if (p.y < 0) {
-          p.y = canvas.height;
-          p.x = Math.random() * canvas.width;
+          if (dist < 4900) { // 70px threshold (70 * 70)
+            const alpha = (1 - Math.sqrt(dist) / 70) * 0.08;
+            c.strokeStyle = `rgba(0, 229, 255, ${alpha})`;
+            c.lineWidth = 0.5;
+            c.beginPath();
+            c.moveTo(stars[i].x, stars[i].y);
+            c.lineTo(stars[j].x, stars[j].y);
+            c.stroke();
+          }
         }
+      }
+
+      // 2. Draw stars & mouse connection lines
+      stars.forEach((star) => {
+        c.fillStyle = star.color;
+        c.beginPath();
+        c.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+        c.fill();
+
+        // Mouse interactive connection
+        if (mouse.x !== null && mouse.y !== null) {
+          const dx = star.x - mouse.x;
+          const dy = star.y - mouse.y;
+          const dist = dx * dx + dy * dy;
+
+          if (dist < 14400) { // 120px threshold (120 * 120)
+            const alpha = (1 - Math.sqrt(dist) / 120) * 0.22;
+            c.strokeStyle = star.color === "#00E5FF" 
+              ? `rgba(0, 229, 255, ${alpha})` 
+              : `rgba(124, 77, 255, ${alpha})`;
+            c.lineWidth = 0.7;
+            c.beginPath();
+            c.moveTo(star.x, star.y);
+            c.lineTo(mouse.x, mouse.y);
+            c.stroke();
+          }
+        }
+
+        // Star upwards translation
+        star.y -= star.speed;
+        // Star wave oscillation
+        star.x += Math.sin(star.y * 0.008 + star.offset) * 0.15;
+
+        // Reset off-screen particles
+        if (star.y < 0) {
+          star.y = canvas.height;
+          star.x = Math.random() * canvas.width;
+        }
+        if (star.x < 0) star.x = canvas.width;
+        if (star.x > canvas.width) star.x = 0;
       });
-
-      // Pulse
-      pulse += 0.015;
-      const pulseRadius = 180 + Math.sin(pulse) * 20;
-
-      const coreGrad = ctx.createRadialGradient(
-        canvas.width / 2,
-        canvas.height / 2,
-        0,
-        canvas.width / 2,
-        canvas.height / 2,
-        pulseRadius
-      );
-      coreGrad.addColorStop(0, "rgba(0,234,255,0.18)");
-      coreGrad.addColorStop(1, "rgba(0,0,0,0)");
-
-      ctx.fillStyle = coreGrad;
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       animationId = requestAnimationFrame(draw);
     };
 
-    // Initial setup
+    // Initialize & Attach Event Listeners
     resize();
     window.addEventListener("resize", resize);
-    window.addEventListener("orientationchange", resize);
+    window.addEventListener("mousemove", handleMouseMove);
+    document.addEventListener("mouseleave", handleMouseLeave);
     
-    // Start animation
     draw();
 
-    // Cleanup
     return () => {
       window.removeEventListener("resize", resize);
-      window.removeEventListener("orientationchange", resize);
+      window.removeEventListener("mousemove", handleMouseMove);
+      document.removeEventListener("mouseleave", handleMouseLeave);
       if (resizeTimeout) clearTimeout(resizeTimeout);
-      if (animationId) cancelAnimationFrame(animationId);
+      cancelAnimationFrame(animationId);
     };
   }, []);
 
   return (
     <div 
       ref={containerRef}
-      className="fixed inset-0 z-[-1] overflow-hidden"
+      className="fixed inset-0 z-[-1] overflow-hidden bg-[#020617]"
       style={{ 
-        width: '100vw', 
+        width: '100%', 
         height: '100vh',
         maxWidth: '100%',
         maxHeight: '100%'
@@ -194,8 +171,6 @@ const Background = () => {
         ref={canvasRef}
         className="block absolute top-0 left-0"
         style={{
-          width: '100%',
-          height: '100%',
           display: 'block'
         }}
       />
