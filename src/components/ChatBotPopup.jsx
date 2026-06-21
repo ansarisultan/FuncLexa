@@ -18,6 +18,18 @@ const ChatBotPopup = () => {
     if (isOpen) scrollToBottom();
   }, [messages, isOpen]);
 
+  useEffect(() => {
+    const handleToggle = (e) => {
+      if (e.detail !== undefined) {
+        setIsOpen(e.detail);
+      } else {
+        setIsOpen((prev) => !prev);
+      }
+    };
+    window.addEventListener("toggle-chatbot", handleToggle);
+    return () => window.removeEventListener("toggle-chatbot", handleToggle);
+  }, []);
+
   const handleSend = async () => {
     if (!input.trim() || loading) return;
 
