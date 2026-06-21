@@ -1,46 +1,106 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    
-    <!-- Instant dark background — prevents white flash -->
-    <style>
-      html, body {
-        background-color: #030712 !important;
-        color: #ffffff !important;
-        margin: 0;
-        padding: 0;
-      }
-    </style>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- Google Fonts — Inter + Space Grotesk for premium typography -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Theme -->
+  <meta name="theme-color" content="#030712" />
+  <meta name="color-scheme" content="dark" />
 
-    <title>FuncLexa — Developer Ecosystem by Sultan Salauddin Ansari</title>
-    <meta name="description" content="FuncLexa is a production-grade developer ecosystem. AI-powered applications, full-stack systems, and intelligent tools — all engineered from the ground up.">
-    <meta name="keywords" content="FuncLexa, developer ecosystem, LexaChat, FuncSilo, FuncSpan, AI tools, Sultan Salauddin Ansari, MERN stack">
-    <meta name="author" content="Sultan Salauddin Ansari">
-    
-    <!-- Open Graph -->
-    <meta property="og:title" content="FuncLexa — The Developer Ecosystem That Ships" />
-    <meta property="og:description" content="Production-grade developer utilities, AI engines, and desktop architectures — engineered from the ground up." />
-    <meta property="og:url" content="https://funclexa.me" />
-    <meta property="og:type" content="website" />
-    
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
-    <link rel="apple-touch-icon" href="/favicon.png">
-    
-    <!-- Preload key images -->
-    <link rel="preload" as="image" href="/lexachat.png" />
-    <link rel="preload" as="image" href="/funcspan.png" />
-    <link rel="preload" as="image" href="/funcsilo.png" />
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+  <!-- Prevent Flash -->
+  <style>
+    html, body {
+      background-color: #030712 !important;
+      color: #ffffff !important;
+      margin: 0;
+      padding: 0;
+    }
+  </style>
+
+  <!-- Canonical -->
+  <link rel="canonical" href="https://funclexa.dev" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Primary SEO -->
+  <title>FuncLexa - By Sultan Salauddin Ansari</title>
+
+  <meta
+    name="description"
+    content="FuncLexa is a modern software ecosystem built by Sultan Salauddin Ansari. Explore AI-powered products, developer tools, full-stack applications, certifications, and innovative digital experiences."
+  />
+
+  <meta
+    name="keywords"
+    content="FuncLexa, Sultan Salauddin Ansari, AI products, developer tools, LexaChat, FuncSpan, FuncSilo, MERN stack, React, Node.js, full stack developer, software engineer, AI assistant"
+  />
+
+  <meta name="author" content="Sultan Salauddin Ansari" />
+
+  <meta
+    name="robots"
+    content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+  />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="FuncLexa" />
+  <meta property="og:title" content="FuncLexa | AI Products & Developer Ecosystem" />
+  <meta
+    property="og:description"
+    content="Explore AI-powered applications, full-stack platforms, developer tools, and the growing FuncLexa ecosystem."
+  />
+  <meta property="og:url" content="https://funclexa.dev" />
+  <meta property="og:image" content="https://funclexa.dev/funclexa.png" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="FuncLexa | AI Products & Developer Ecosystem" />
+  <meta
+    name="twitter:description"
+    content="AI-powered applications, developer tools, certifications, and innovative software built by Sultan Salauddin Ansari."
+  />
+  <meta name="twitter:image" content="https://funclexa.dev/funclexa.png" />
+
+  <!-- Favicons -->
+  <link rel="icon" href="/favicon.png" />
+  <link rel="apple-touch-icon" href="/favicon.png" />
+
+  <!-- Sitemap -->
+  <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
+
+  <!-- Performance -->
+  <link rel="preload" as="image" href="/lexachat.png" />
+  <link rel="preload" as="image" href="/funcspan.png" />
+  <link rel="preload" as="image" href="/funcsilo.png" />
+
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"Organization",
+    "name":"FuncLexa",
+    "url":"https://funclexa.dev",
+    "founder":{
+      "@type":"Person",
+      "name":"Sultan Salauddin Ansari"
+    },
+    "sameAs":[
+      "https://sultanansari.online",
+      "https://github.com/ansarisultan"
+    ],
+    "description":"Developer ecosystem featuring AI products, SaaS platforms, full-stack applications and innovative digital experiences.",
+    "brand":"FuncLexa"
+  }
+  </script>
+</head>
+
+<body>
+  <div id="root"></div>
+  <script type="module" src="/src/main.jsx"></script>
+</body>
 </html>
