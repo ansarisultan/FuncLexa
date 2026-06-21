@@ -299,7 +299,7 @@ const Projects = () => {
       longDesc:
         "FuncSpan is a full-stack developer utility and network simulation engine operating as a core submodule within the FuncSilo ecosystem. It enables real-time HTTP traffic inspection, artificial latency injection, response payload hotwiring, and custom API error state simulation for robust client-side edge-case testing. Designed with wild-card CORS configurations, it helps engineers pressure-test API integrations instantly without external databases or token verification pipelines.",
       demoLink: "https://funcspan.funclexa.dev/",
-      githubLink: "https://github.com/ansarisultan/",
+      githubLink: "https://github.com/ansarisultan/FuncPort",
       imageUrl: "/funcspan.png",
       icon: <FiActivity className="text-3xl" />,
       color: "from-rose-500 via-red-500 to-amber-600",
@@ -334,7 +334,7 @@ const Projects = () => {
       longDesc:
         "FuncSilo is a premium developer productivity suite designed to act as a centralized assets hub for modern engineering teams. It allows developers to store, manage, and retrieve reusable React component architectures, high-fidelity UI templates, utility hook collections, and custom asset assets. Built with a focus on ease-of-use and low-latency search capabilities, FuncSilo streamlines the workflow from mockups to production-ready deployments.",
       demoLink: "https://funcsilo.funclexa.dev/",
-      githubLink: "https://github.com/ansarisultan/",
+      githubLink: "https://github.com/ansarisultan/FuncLexa-assests",
       imageUrl: "/funcsilo.png",
       icon: <FiLayers className="text-3xl" />,
       color: "from-amber-500 via-orange-500 to-yellow-500",

@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
+import { motion } from "framer-motion";
+import { FiUnlock, FiCpu, FiLayers, FiZap, FiTerminal } from "react-icons/fi";
 
 const stats = [
-  { number: "7+", label: "Years Coding", icon: "⚡" },
-  { number: "5+", label: "Live Projects", icon: "🚀" },
-  { number: "4", label: "Ecosystem Apps", icon: "🌐" },
-  { number: "∞", label: "Lines of Code", icon: "💻" },
+  { number: "2+", label: "Years Coding" },
+  { number: "5+", label: "Live Projects" },
+  { number: "4", label: "Ecosystem Apps" },
+  { number: "∞", label: "Lines of Code" },
 ];
 
 const techStack = [
@@ -16,6 +18,13 @@ const techStack = [
   { name: "Tailwind", category: "Styling" },
   { name: "Groq AI", category: "AI/ML" },
   { name: "Vite", category: "Build" },
+];
+
+const philosophyCards = [
+  { title: "Open Source", desc: "Building in public, sharing knowledge with the community", icon: FiUnlock, accent: "cyan" },
+  { title: "AI-First", desc: "Every application integrates intelligent automation", icon: FiCpu, accent: "violet" },
+  { title: "Full Stack", desc: "From database architecture to deployment, end-to-end", icon: FiLayers, accent: "blue" },
+  { title: "Performance", desc: "Optimized for speed, reliability, and user experience", icon: FiZap, accent: "emerald" },
 ];
 
 const AnimatedNumber = ({ target, suffix = "" }) => {
@@ -48,123 +57,189 @@ const AnimatedNumber = ({ target, suffix = "" }) => {
   return <span ref={ref}>{typeof count === 'number' ? count + suffix : count}</span>;
 };
 
+const accentMap = {
+  cyan: { bg: "bg-cyan-400/[0.08]", border: "border-cyan-400/15", text: "text-cyan-400", glow: "group-hover:shadow-[0_0_20px_rgba(34,211,238,0.1)]" },
+  violet: { bg: "bg-violet-400/[0.08]", border: "border-violet-400/15", text: "text-violet-400", glow: "group-hover:shadow-[0_0_20px_rgba(124,58,237,0.1)]" },
+  blue: { bg: "bg-blue-400/[0.08]", border: "border-blue-400/15", text: "text-blue-400", glow: "group-hover:shadow-[0_0_20px_rgba(59,130,246,0.1)]" },
+  emerald: { bg: "bg-emerald-400/[0.08]", border: "border-emerald-400/15", text: "text-emerald-400", glow: "group-hover:shadow-[0_0_20px_rgba(52,211,153,0.1)]" },
+};
+
+const sectionVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] } }
+};
+
+const staggerContainer = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.08 } }
+};
+
 const About = () => {
   return (
-    <section id="about" className="relative py-32 overflow-hidden">
-      <div className="max-w-7xl mx-auto px-6 sm:px-12">
+    <section id="about" className="relative py-28 sm:py-36 overflow-hidden">
+      {/* Background elements */}
+      <div className="absolute inset-0 bg-grid-pattern opacity-30" />
+      <div className="absolute top-0 right-0 w-96 h-96 bg-cyan-500/[0.03] rounded-full blur-[120px]" />
+      <div className="absolute bottom-0 left-0 w-96 h-96 bg-violet-500/[0.03] rounded-full blur-[120px]" />
+      
+      <div className="relative max-w-7xl mx-auto px-6 sm:px-12">
         
         {/* Section Header */}
-        <div className="text-center mb-20">
-          <p className="text-cyan-400 font-mono text-xs tracking-[0.4em] uppercase mb-4">// About</p>
-          <h2 className="text-4xl sm:text-5xl md:text-6xl font-black text-white mb-6">
-            The <span className="bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">FuncLexa</span> System
-          </h2>
-          <p className="text-white/40 text-lg max-w-2xl mx-auto leading-relaxed">
-            A personal development ecosystem where ideas are dreamed, coded, and shipped as real, working applications.
+        <motion.div 
+          className="text-center mb-20"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-80px" }}
+          variants={sectionVariants}
+        >
+          <p className="text-cyan-400/60 font-mono text-[11px] tracking-[0.3em] uppercase mb-4">
+            <span className="text-white/20">{'// '}</span>Platform
           </p>
-        </div>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.5rem] font-display font-bold text-white mb-5 tracking-tight">
+            The <span className="bg-gradient-to-r from-cyan-400 via-blue-400 to-violet-500 bg-clip-text text-transparent">FuncLexa</span> System
+          </h2>
+          <p className="text-white/35 text-[15px] sm:text-base max-w-2xl mx-auto leading-relaxed font-light">
+            A development ecosystem where ideas are engineered, coded, and shipped as real, production-grade applications.
+          </p>
+        </motion.div>
 
         {/* Stats Grid */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-20">
+        <motion.div 
+          className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-20"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-80px" }}
+          variants={staggerContainer}
+        >
           {stats.map((stat, i) => (
-            <div key={i} className="group relative p-6 sm:p-8 rounded-2xl text-center
-                                    border border-white/[0.06] hover:border-cyan-400/30
-                                    bg-white/[0.02] hover:bg-cyan-400/[0.03]
-                                    transition-all duration-500 hover:-translate-y-1">
-              <div className="text-3xl mb-3">{stat.icon}</div>
-              <div className="text-3xl sm:text-4xl font-black text-white mb-1">
-                <AnimatedNumber target={stat.number} suffix="+" />
+            <motion.div 
+              key={i} 
+              variants={sectionVariants}
+              className="group relative p-6 sm:p-8 rounded-2xl text-center
+                         border border-white/[0.05] hover:border-cyan-400/15
+                         bg-white/[0.015] hover:bg-white/[0.03]
+                         transition-all duration-500 hover:-translate-y-1"
+            >
+              <div className="text-2xl sm:text-3xl lg:text-4xl font-display font-bold text-white mb-2 tracking-tight">
+                <AnimatedNumber target={stat.number} suffix="" />
               </div>
-              <p className="text-xs sm:text-sm text-white/40 font-mono tracking-wider uppercase">{stat.label}</p>
-              {/* Bottom glow */}
-              <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1/2 h-px bg-gradient-to-r from-transparent via-cyan-400/50 to-transparent 
+              <p className="text-[10px] sm:text-[11px] text-white/30 font-mono tracking-[0.12em] uppercase">{stat.label}</p>
+              <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-12 h-[1px] bg-gradient-to-r from-transparent via-cyan-400/40 to-transparent 
                               opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
 
         {/* Two Column Layout */}
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-start">
+        <div className="grid lg:grid-cols-2 gap-14 lg:gap-20 items-start">
           
           {/* Left — Narrative */}
-          <div className="space-y-8">
-            <div className="space-y-6 text-white/60 text-lg leading-relaxed">
+          <motion.div 
+            className="space-y-8"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-80px" }}
+            variants={staggerContainer}
+          >
+            <motion.div variants={sectionVariants} className="space-y-5 text-white/45 text-[15px] leading-[1.8]">
               <p>
-                FuncLexa is my personal web app and showcasing platform — a place where ideas are{" "}
-                <span className="text-cyan-400 font-semibold">dreamed, coded, and shipped</span>{" "}
-                as real, working applications.
+                FuncLexa is a developer ecosystem and product studio — a place where ideas are{" "}
+                <span className="text-cyan-400/80 font-medium">engineered, coded, and shipped</span>{" "}
+                as real, working applications that solve real problems.
               </p>
               <p>
-                A key focus of FuncLexa is building{" "}
-                <span className="text-cyan-400 font-semibold">AI-integrated web applications</span>{" "}
-                alongside modern, scalable web systems using real-world technologies.
+                A core focus is building{" "}
+                <span className="text-cyan-400/80 font-medium">AI-integrated web applications</span>{" "}
+                alongside modern, scalable systems using production-grade technologies and best practices.
               </p>
-              <p className="text-white/80 font-medium italic border-l-2 border-cyan-400/40 pl-6">
-                "Dream it. Code it. Push it here." — that's the FuncLexa way.
+              <p className="text-white/55 font-medium italic border-l-2 border-cyan-400/25 pl-5 py-1">
+                "Build it. Ship it. Evolve it." — the FuncLexa way.
               </p>
-            </div>
+            </motion.div>
 
             {/* Philosophy cards */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {[
-                { title: "Open Source", desc: "Building in public, sharing with the community", icon: "🔓" },
-                { title: "AI-First", desc: "Every app integrates intelligent automation", icon: "🧠" },
-                { title: "Full Stack", desc: "From database to deployment, end-to-end", icon: "📦" },
-                { title: "Performance", desc: "Optimized for speed and user experience", icon: "⚡" },
-              ].map((item, i) => (
-                <div key={i} className="p-4 rounded-xl border border-white/[0.06] bg-white/[0.02]
-                                       hover:border-cyan-400/20 hover:bg-cyan-400/[0.02]
-                                       transition-all duration-300">
-                  <div className="text-xl mb-2">{item.icon}</div>
-                  <h4 className="text-white font-bold text-sm mb-1">{item.title}</h4>
-                  <p className="text-white/40 text-xs leading-relaxed">{item.desc}</p>
-                </div>
-              ))}
-            </div>
-          </div>
+            <motion.div variants={sectionVariants} className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {philosophyCards.map((item, i) => {
+                const colors = accentMap[item.accent];
+                const Icon = item.icon;
+                return (
+                  <div key={i} className={`group p-4 rounded-xl border border-white/[0.05] bg-white/[0.015]
+                                          hover:${colors.border} hover:bg-white/[0.025]
+                                          ${colors.glow}
+                                          transition-all duration-400`}>
+                    <div className={`w-8 h-8 rounded-lg ${colors.bg} border ${colors.border} 
+                                    flex items-center justify-center ${colors.text} mb-3`}>
+                      <Icon size={14} />
+                    </div>
+                    <h4 className="text-white/80 font-semibold text-sm mb-1 tracking-wide">{item.title}</h4>
+                    <p className="text-white/30 text-xs leading-relaxed">{item.desc}</p>
+                  </div>
+                );
+              })}
+            </motion.div>
+          </motion.div>
 
           {/* Right — Tech Stack */}
-          <div className="space-y-8">
-            <div>
-              <h3 className="text-white font-bold text-xl mb-6 flex items-center gap-3">
-                <span className="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-400 to-blue-500 flex items-center justify-center text-sm">⚙</span>
-                Tech Stack
+          <motion.div 
+            className="space-y-8"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-80px" }}
+            variants={staggerContainer}
+          >
+            <motion.div variants={sectionVariants}>
+              <h3 className="text-white/80 font-display font-semibold text-lg mb-5 flex items-center gap-3">
+                <span className="w-7 h-7 rounded-lg bg-gradient-to-br from-cyan-500/20 to-blue-500/20 border border-cyan-400/15 
+                                flex items-center justify-center text-cyan-400">
+                  <FiTerminal size={12} />
+                </span>
+                <span className="tracking-wide">Tech Stack</span>
               </h3>
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-2 gap-2.5">
                 {techStack.map((tech, i) => (
-                  <div key={i} className="group flex items-center gap-3 p-4 rounded-xl
-                                          border border-white/[0.06] bg-white/[0.02]
-                                          hover:border-cyan-400/30 hover:bg-cyan-400/[0.03]
-                                          transition-all duration-300">
-                    <div className="w-2 h-2 rounded-full bg-cyan-400 shadow-[0_0_6px_rgba(0,229,255,0.6)]
-                                    group-hover:shadow-[0_0_12px_rgba(0,229,255,0.9)] transition-all duration-300" />
-                    <div>
-                      <p className="text-white font-semibold text-sm">{tech.name}</p>
-                      <p className="text-white/30 text-[10px] font-mono uppercase tracking-wider">{tech.category}</p>
+                  <motion.div 
+                    key={i} 
+                    variants={sectionVariants}
+                    className="group flex items-center gap-3 p-3.5 rounded-xl
+                               border border-white/[0.05] bg-white/[0.015]
+                               hover:border-cyan-400/15 hover:bg-white/[0.03]
+                               transition-all duration-300"
+                  >
+                    <div className="w-1.5 h-1.5 rounded-full bg-cyan-400/50 
+                                    group-hover:bg-cyan-400 group-hover:shadow-[0_0_8px_rgba(34,211,238,0.6)] 
+                                    transition-all duration-300 flex-shrink-0" />
+                    <div className="min-w-0">
+                      <p className="text-white/70 font-medium text-sm truncate">{tech.name}</p>
+                      <p className="text-white/20 text-[9px] font-mono uppercase tracking-[0.15em]">{tech.category}</p>
                     </div>
-                  </div>
+                  </motion.div>
                 ))}
               </div>
-            </div>
+            </motion.div>
 
             {/* Terminal-style info */}
-            <div className="rounded-2xl border border-white/[0.06] bg-white/[0.02] overflow-hidden">
-              <div className="flex items-center gap-2 px-4 py-3 border-b border-white/[0.06]">
-                <div className="w-3 h-3 rounded-full bg-red-400/60" />
-                <div className="w-3 h-3 rounded-full bg-yellow-400/60" />
-                <div className="w-3 h-3 rounded-full bg-green-400/60" />
-                <span className="text-[10px] text-white/30 font-mono ml-2">system.info</span>
+            <motion.div 
+              variants={sectionVariants}
+              className="rounded-2xl border border-white/[0.05] bg-white/[0.015] overflow-hidden"
+            >
+              <div className="flex items-center gap-2 px-4 py-3 border-b border-white/[0.04]">
+                <div className="flex gap-1.5">
+                  <div className="w-2.5 h-2.5 rounded-full bg-red-400/50" />
+                  <div className="w-2.5 h-2.5 rounded-full bg-yellow-400/50" />
+                  <div className="w-2.5 h-2.5 rounded-full bg-green-400/50" />
+                </div>
+                <span className="text-[10px] text-white/20 font-mono ml-2 tracking-wider">system.config</span>
               </div>
-              <div className="p-5 font-mono text-xs space-y-2 text-white/50">
-                <p><span className="text-cyan-400">platform</span>: FuncLexa v2.0</p>
-                <p><span className="text-cyan-400">status</span>: <span className="text-green-400">● online</span></p>
-                <p><span className="text-cyan-400">ecosystem</span>: LexaChat, FuncSilo, FuncSpan, FLexa</p>
-                <p><span className="text-cyan-400">stack</span>: MERN + Electron + AI</p>
-                <p><span className="text-cyan-400">author</span>: Sultan Salauddin Ansari</p>
-                <p><span className="text-cyan-400">philosophy</span>: "Build it. Ship it. Evolve it."</p>
+              <div className="p-5 font-mono text-xs space-y-2.5 text-white/40">
+                <p><span className="text-cyan-400/70">platform</span><span className="text-white/15"> : </span>FuncLexa v2.0</p>
+                <p><span className="text-cyan-400/70">status</span><span className="text-white/15"> : </span><span className="text-emerald-400/70">● online</span></p>
+                <p><span className="text-cyan-400/70">ecosystem</span><span className="text-white/15"> : </span>LexaChat, FuncSilo, FuncSpan, FLexa</p>
+                <p><span className="text-cyan-400/70">stack</span><span className="text-white/15"> : </span>MERN + Electron + AI</p>
+                <p><span className="text-cyan-400/70">author</span><span className="text-white/15"> : </span>Sultan Salauddin Ansari</p>
+                <p><span className="text-cyan-400/70">philosophy</span><span className="text-white/15"> : </span><span className="text-white/25 italic">"Build it. Ship it. Evolve it."</span></p>
               </div>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         </div>
       </div>
     </section>

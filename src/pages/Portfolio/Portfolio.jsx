@@ -414,7 +414,7 @@ const Portfolio = () => {
                 <div className="flex-1">
                   <h2 className={`text-4xl font-bold mb-4 ${isDarkMode ? 'text-cyan-300' : 'text-blue-600'
                     }`}>
-                    The Mind Behind The FuncLexa
+                    The Story Behind FuncLexa
                   </h2>
                   <div className={`p-6 rounded-xl ${isDarkMode ? 'bg-gray-900/30 border-gray-700/50' : 'bg-white/30 border-blue-100/50'
                     } border backdrop-blur-sm`}>

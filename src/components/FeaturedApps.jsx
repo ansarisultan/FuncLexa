@@ -1,39 +1,43 @@
 import React, { useState, useRef } from "react";
 import { Link } from "react-router-dom";
-import { FaGithub, FaExternalLinkAlt } from "react-icons/fa";
+import { motion } from "framer-motion";
+import { FiGithub, FiArrowUpRight, FiExternalLink } from "react-icons/fi";
 
 const apps = [
   {
     title: "LexaChat AI",
-    desc: "A high-performance, secure AI chat application built on a dual-process system model with an isolated service backend. Context-aware conversations powered by Groq API.",
+    desc: "High-performance AI chat with dual-process system model, isolated backend, and context-aware conversations via Groq API.",
     tags: ["Electron", "React", "Node.js", "Groq AI"],
     image: "/lexachat.png",
     demo: "https://lexachat-funclexa.vercel.app/",
     github: "https://github.com/ansarisultan/lexachat",
-    gradient: "from-cyan-500/20 to-blue-500/20",
     accent: "cyan",
   },
   {
     title: "FuncSpan",
-    desc: "A deep-dive developer sandbox built to intercept live API payloads, inject HTTP status codes, and simulate custom network latency in real-time.",
+    desc: "Developer sandbox to intercept live API payloads, inject HTTP status codes, and simulate custom network latency in real-time.",
     tags: ["React", "Proxy Engine", "Traffic Inspector"],
     image: "/funcspan.png",
     demo: "https://funcspan.funclexa.dev/",
-    github: "https://github.com/ansarisultan/",
-    gradient: "from-blue-500/20 to-purple-500/20",
+    github: "https://github.com/ansarisultan/FuncPort",
     accent: "blue",
   },
   {
     title: "FuncSilo",
-    desc: "A premium developer sandbox workspace featuring high-fidelity custom design systems, responsive component templates, and isolated asset pipelines.",
+    desc: "Premium workspace with high-fidelity design systems, responsive component templates, and isolated asset pipelines.",
     tags: ["React", "Design Studio", "Asset Manager"],
     image: "/funcsilo.png",
     demo: "https://funcsilo.funclexa.dev/",
-    github: "https://github.com/ansarisultan/",
-    gradient: "from-purple-500/20 to-pink-500/20",
-    accent: "purple",
+    github: "https://github.com/ansarisultan/FuncLexa-assests",
+    accent: "violet",
   },
 ];
+
+const glowColors = {
+  cyan: "rgba(34,211,238,0.1)",
+  blue: "rgba(59,130,246,0.1)",
+  violet: "rgba(124,58,237,0.1)",
+};
 
 const FeaturedAppCard = ({ app, index }) => {
   const cardRef = useRef(null);
@@ -43,140 +47,105 @@ const FeaturedAppCard = ({ app, index }) => {
   const handleMouseMove = (e) => {
     if (!cardRef.current) return;
     const rect = cardRef.current.getBoundingClientRect();
-    setMousePos({
-      x: e.clientX - rect.left,
-      y: e.clientY - rect.top,
-    });
+    setMousePos({ x: e.clientX - rect.left, y: e.clientY - rect.top });
   };
-
-  const accentColors = {
-    cyan: { border: "hover:border-cyan-400/40", glow: "rgba(0,229,255,0.15)", shadow: "hover:shadow-[0_0_40px_rgba(0,229,255,0.15)]" },
-    blue: { border: "hover:border-blue-400/40", glow: "rgba(59,130,246,0.15)", shadow: "hover:shadow-[0_0_40px_rgba(59,130,246,0.15)]" },
-    purple: { border: "hover:border-purple-400/40", glow: "rgba(124,77,255,0.15)", shadow: "hover:shadow-[0_0_40px_rgba(124,77,255,0.15)]" },
-  };
-
-  const colors = accentColors[app.accent] || accentColors.cyan;
 
   return (
-    <div
+    <motion.div
       ref={cardRef}
       onMouseMove={handleMouseMove}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className={`group relative rounded-2xl overflow-hidden flex flex-col h-full
-                  border border-white/[0.06] ${colors.border} ${colors.shadow}
-                  bg-white/[0.02] transition-all duration-500 hover:-translate-y-2`}
-      style={{ animationDelay: `${index * 150}ms` }}
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-60px" }}
+      transition={{ duration: 0.6, delay: index * 0.12 }}
+      className="group relative rounded-2xl overflow-hidden flex flex-col h-full
+                 border border-white/[0.05] hover:border-white/[0.1]
+                 bg-white/[0.015] transition-all duration-500 hover:-translate-y-1.5
+                 hover:shadow-[0_8px_40px_rgba(34,211,238,0.06)]"
     >
-      {/* Mouse follow glow */}
       {isHovered && (
-        <div
-          className="absolute inset-0 pointer-events-none z-10 transition-opacity duration-300"
+        <div className="absolute inset-0 pointer-events-none z-10"
           style={{
-            background: `radial-gradient(300px circle at ${mousePos.x}px ${mousePos.y}px, ${colors.glow}, transparent 70%)`,
+            background: `radial-gradient(350px circle at ${mousePos.x}px ${mousePos.y}px, ${glowColors[app.accent]}, transparent 70%)`,
           }}
         />
       )}
 
-      {/* Image */}
       <div className="relative h-48 sm:h-52 overflow-hidden">
-        <img
-          src={app.image}
-          alt={app.title}
-          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#020617] via-[#020617]/50 to-transparent" />
-        
-        {/* Floating badge */}
-        <div className="absolute top-4 right-4 px-3 py-1 rounded-full bg-black/60 backdrop-blur-sm
-                        border border-white/10 text-[10px] text-white/60 font-mono uppercase tracking-wider">
-          Live
+        <img src={app.image} alt={app.title}
+          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#030712] via-[#030712]/60 to-transparent" />
+        <div className="absolute top-4 right-4 px-2.5 py-1 rounded-md bg-[#030712]/70 backdrop-blur-sm
+                        border border-emerald-400/20 text-[9px] font-mono uppercase tracking-[0.15em] text-emerald-400/70">
+          <span className="flex items-center gap-1.5">
+            <span className="w-1 h-1 rounded-full bg-emerald-400" />Live
+          </span>
         </div>
       </div>
 
-      {/* Content */}
       <div className="flex-1 p-6 flex flex-col justify-between relative z-20">
         <div>
-          <h3 className="text-xl font-bold text-white mb-3 group-hover:text-cyan-400 transition-colors duration-300">
-            {app.title}
-          </h3>
-          <p className="text-sm text-white/40 leading-relaxed mb-5">{app.desc}</p>
+          <h3 className="text-lg font-display font-semibold text-white/90 mb-3 tracking-wide
+                         group-hover:text-white transition-colors duration-300">{app.title}</h3>
+          <p className="text-[13px] text-white/35 leading-relaxed mb-5">{app.desc}</p>
         </div>
-
         <div>
-          {/* Tags */}
-          <div className="flex flex-wrap gap-2 mb-5">
+          <div className="flex flex-wrap gap-1.5 mb-5">
             {app.tags.map((tag, i) => (
-              <span
-                key={i}
-                className="text-[10px] px-2.5 py-1 rounded-md font-mono tracking-wider
-                           bg-white/[0.04] border border-white/[0.06] text-white/50"
-              >
-                {tag}
-              </span>
+              <span key={i} className="text-[9px] px-2 py-1 rounded-md font-mono tracking-[0.1em]
+                                       bg-white/[0.03] border border-white/[0.06] text-white/40">{tag}</span>
             ))}
           </div>
-
-          {/* Actions */}
-          <div className="flex gap-3">
+          <div className="flex gap-2.5">
             {app.demo.startsWith("/") ? (
-              <Link
-                to={app.demo}
-                className="flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-xs font-bold uppercase tracking-wider
-                           bg-gradient-to-r from-cyan-500/10 to-blue-500/10 border border-cyan-400/20 text-cyan-400
-                           hover:from-cyan-500/20 hover:to-blue-500/20 hover:border-cyan-400/40
-                           transition-all duration-300"
-              >
-                <FaExternalLinkAlt className="text-[10px]" /> Explore
+              <Link to={app.demo}
+                className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-[11px] font-semibold uppercase tracking-[0.1em]
+                           bg-cyan-500/[0.08] border border-cyan-400/15 text-cyan-400
+                           hover:bg-cyan-500/[0.12] hover:border-cyan-400/25 transition-all duration-300">
+                <FiExternalLink size={11} /> Explore
               </Link>
             ) : (
-              <a
-                href={app.demo}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-xs font-bold uppercase tracking-wider
-                           bg-gradient-to-r from-cyan-500/10 to-blue-500/10 border border-cyan-400/20 text-cyan-400
-                           hover:from-cyan-500/20 hover:to-blue-500/20 hover:border-cyan-400/40
-                           transition-all duration-300"
-              >
-                <FaExternalLinkAlt className="text-[10px]" /> Demo
+              <a href={app.demo} target="_blank" rel="noopener noreferrer"
+                className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-[11px] font-semibold uppercase tracking-[0.1em]
+                           bg-cyan-500/[0.08] border border-cyan-400/15 text-cyan-400
+                           hover:bg-cyan-500/[0.12] hover:border-cyan-400/25 transition-all duration-300">
+                <FiArrowUpRight size={12} /> Demo
               </a>
             )}
-            <a
-              href={app.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-xs font-bold uppercase tracking-wider
-                         border border-white/[0.06] text-white/50
-                         hover:border-white/20 hover:text-white hover:bg-white/5
-                         transition-all duration-300"
-            >
-              <FaGithub />
+            <a href={app.github} target="_blank" rel="noopener noreferrer"
+              className="flex items-center justify-center px-3.5 py-2.5 rounded-xl
+                         border border-white/[0.05] text-white/35
+                         hover:border-white/15 hover:text-white/70 hover:bg-white/[0.03] transition-all duration-300">
+              <FiGithub size={13} />
             </a>
           </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
 const FeaturedApps = () => {
   return (
-    <section id="featured" className="relative py-32">
-      <div className="max-w-7xl mx-auto px-6 sm:px-12">
-        {/* Header */}
-        <div className="text-center mb-16">
-          <p className="text-cyan-400 font-mono text-xs tracking-[0.4em] uppercase mb-4">// Ecosystem</p>
-          <h2 className="text-4xl sm:text-5xl md:text-6xl font-black text-white mb-6">
-            Featured <span className="bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">Apps</span>
+    <section id="featured" className="relative py-28 sm:py-36">
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-cyan-500/[0.02] rounded-full blur-[150px]" />
+      <div className="relative max-w-7xl mx-auto px-6 sm:px-12">
+        <motion.div className="text-center mb-16"
+          initial={{ opacity: 0, y: 25 }} whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-80px" }} transition={{ duration: 0.6 }}>
+          <p className="text-cyan-400/60 font-mono text-[11px] tracking-[0.3em] uppercase mb-4">
+            <span className="text-white/20">{'// '}</span>Ecosystem
+          </p>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.5rem] font-display font-bold text-white mb-5 tracking-tight">
+            Featured <span className="bg-gradient-to-r from-cyan-400 via-blue-400 to-violet-500 bg-clip-text text-transparent">Products</span>
           </h2>
-          <p className="text-white/40 text-lg max-w-2xl mx-auto">
+          <p className="text-white/35 text-[15px] sm:text-base max-w-xl mx-auto font-light leading-relaxed">
             Production-grade applications powering the FuncLexa ecosystem.
           </p>
-        </div>
-
-        {/* Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+        </motion.div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
           {apps.map((app, index) => (
             <FeaturedAppCard key={index} app={app} index={index} />
           ))}
