@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import AskAI from "./AskAI";
 import { FiMenu, FiX } from "react-icons/fi";
+import logoImg from "../assets/funclexa.png";
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -57,10 +58,10 @@ const Navbar = () => {
           {/* Brand */}
           <div className="flex items-center gap-3 cursor-pointer group" onClick={() => navigate("/")}>
             <div className="relative">
-              <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-cyan-400 via-blue-500 to-violet-600 flex items-center justify-center
+              <div className="w-9 h-9 rounded-xl overflow-hidden border border-white/[0.08] flex items-center justify-center
                               shadow-[0_0_20px_rgba(34,211,238,0.25)] group-hover:shadow-[0_0_30px_rgba(34,211,238,0.4)]
                               transition-all duration-500 group-hover:scale-105">
-                <span className="text-white font-black text-sm font-display">F</span>
+                <img src={logoImg} alt="FuncLexa" className="w-full h-full object-cover" />
               </div>
               <div className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-emerald-400 border-[1.5px] border-[#030712]" />
             </div>
